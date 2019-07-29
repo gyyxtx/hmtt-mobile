@@ -22,8 +22,8 @@
 </template>
 
 <script>
-// 引入axios
-import axios from 'axios'
+// 引入封装的request请求模块
+import request from '@/utils/request.js'
 export default {
   name: 'loginInex',
   data () {
@@ -35,10 +35,11 @@ export default {
     }
   },
   methods: {
+    //   登录发送请求
     async handleLogin () {
-      const res = await axios({
+      const res = await request({
         method: 'POST',
-        url: 'http://ttapi.research.itcast.cn/app/v1_0/authorizations',
+        url: '/app/v1_0/authorizations',
         data: this.user
       })
       console.log(res)
