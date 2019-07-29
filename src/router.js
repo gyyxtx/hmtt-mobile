@@ -7,7 +7,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: ''
+      name: 'home',
+      // vue-router的路由懒加载
+      component: () => import('@/views/home')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/login')
     }
   ]
 })
