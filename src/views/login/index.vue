@@ -40,6 +40,8 @@ export default {
       try {
         const res = await login(this.user)
         console.log(res)
+        // 登录成功后将请求返回的token值，更新给token
+        this.$store.commit('setUser', res)
       } catch (error) {
         console.log(error)
       }
