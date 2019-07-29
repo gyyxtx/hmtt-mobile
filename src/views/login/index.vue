@@ -22,8 +22,7 @@
 </template>
 
 <script>
-// 引入封装的request请求模块
-import request from '@/utils/request.js'
+import { login } from '@/api/user.js'
 export default {
   name: 'loginInex',
   data () {
@@ -37,12 +36,13 @@ export default {
   methods: {
     //   登录发送请求
     async handleLogin () {
-      const res = await request({
-        method: 'POST',
-        url: '/app/v1_0/authorizations',
-        data: this.user
-      })
-      console.log(res)
+    // 判断请求是否成功，如果成功就执行try，如果失败，就执行catch
+      try {
+        const res = await login(this.user)
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
