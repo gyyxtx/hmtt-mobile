@@ -3,33 +3,45 @@
     <!-- 导航 -->
     <van-nav-bar title="登录" />
     <!-- 登录表单 -->
-    <form>
+    <form action="/" method="POST">
         <van-cell-group>
             <van-field
-            v-model="user.phone"
+            v-model="user.mobile"
             required
             clearable
             label="手机号"
-            right-icon="question-o"
+            right-icon="phone-o"
             placeholder="请输入手机号"
             />
 
-            <van-field v-model="user.password" type="password" label="密码" placeholder="请输入密码" required />
-            <van-button type="info" block>登录</van-button>
+            <van-field v-model="user.code" type="password" label="密码" placeholder="请输入密码" required right-icon="bag-o"/>
+            <van-button type="info" block @click.prevent="handleLogin">登录</van-button>
       </van-cell-group>
     </form>
   </div>
 </template>
 
 <script>
+// 引入axios
+import axios from 'axios'
 export default {
   name: 'loginInex',
   data () {
     return {
       user: {
-        phone: '18801185985',
-        password: '246810'
+        mobile: '18801185985',
+        code: '246810'
       }
+    }
+  },
+  methods: {
+    async handleLogin () {
+      const res = await axios({
+        method: 'POST',
+        url: 'http://ttapi.research.itcast.cn/app/v1_0/authorizations',
+        data: this.user
+      })
+      console.log(res)
     }
   }
 }
