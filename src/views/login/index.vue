@@ -24,7 +24,7 @@
             />
 
             <van-field v-model="user.code" type="password" label="密码" placeholder="请输入密码" required right-icon="bag-o"/>
-            <van-button type="info" block @click.prevent="handleLogin">登录</van-button>
+            <van-button type="info" block @click.prevent="handleLogin" :loading="loadingStatus">登录</van-button>
       </van-cell-group>
     </form>
   </div>
@@ -39,27 +39,34 @@ export default {
       user: {
         mobile: '18801185985',
         code: '246810'
-      }
+      },
+      // 登录加载状态
+      loadingStatus: false
     }
   },
   methods: {
     //   登录发送请求
     async handleLogin () {
-    // 判断请求是否成功，如果成功就执行try，如果失败，就执行catch
+      // 请求响应之前将显示加载效果
+      this.loadingStatus = true
+      // 判断请求是否成功，如果成功就执行try，如果失败，就执行catch
       try {
         // 验证手机号
-        this.$validator.validate().then(async valid => {
-          // 如果验证失败，直接返回
-          if (!valid) {
-            console.log('error----')
-            return
-          }
-          // 验证成功，执行登录
-          const res = await login(this.user)
-          console.log(res)
-          // 登录成功后将请求返回的token值，更新给token
-          this.$store.commit('setUser', res)
-        })
+        const valid = await this.$validator.validate()
+        // 如果验证失败，直接返回
+        if (!valid) {
+          console.log('error----')
+          return
+        }
+        // 验证成功，执行登录
+        const res = await login(this.user)
+        console.log(res)
+        // 登录成功后将请求返回的token值，更新给token
+        this.$store.commit('setUser', res)
+        // 登录成功后，跳转至首页
+        this.$router.push('/')
+        // 跳转成功后，将加载改为false
+        this.loadingStatus = false
       } catch (error) {
         console.log(error)
       }
